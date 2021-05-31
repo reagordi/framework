@@ -1,118 +1,88 @@
 <?php
 
 use Reagordi\Framework\Base\Applicaiton;
-use Reagordi\Framework\Config\Options;
-use Reagordi\Framework\Config\Config;
 use Reagordi\Framework\Base\Security;
+use Reagordi\Framework\Base\Options;
 use Reagordi\Framework\Base\Context;
+use Reagordi\Framework\Web\User;
 
 class Reagordi
 {
-  /**
-   * Экземпляр класса Reagordi
-   *
-   * @var Reagordi
-   */
-  public static $app;
+    /**
+     * Экземпляр класса Reagordi
+     *
+     * @var Reagordi
+     */
+    public static $app;
 
-  /**
-   * Экземпляр класса Application
-   *
-   * @var Application
-   */
-  public $applicaiton;
+    /**
+     * Экземпляр класса Application
+     *
+     * @var Application
+     */
+    public $applicaiton;
 
-  /**
-   * Экземпляр класса Context
-   *
-   * @var Context
-   */
-  public $context;
+    /**
+     * Экземпляр класса Context
+     *
+     * @var Context
+     */
+    public $context;
 
-  /**
-   * Экземпляр класса Config
-   *
-   * @var Config
-   */
-  public $config;
+    /**
+     * Экземпляр класса Options
+     *
+     * @var Options
+     */
+    public $options;
 
-  /**
-   * Экземпляр класса Options
-   *
-   * @var Options
-   */
-  public $options;
+    /**
+     * Безопасность
+     *
+     * @var Security
+     */
+    public $security;
 
-  /**
-   * Безопасность
-   *
-   * @var Security
-   */
-  public $security;
+    /**
+     * Пользователь
+     *
+     * @var User
+     */
+    public $user;
 
-  /**
-   * Reagordi constructor.
-   */
-  protected function __construct()
-  {
-    $this->applicaiton = Applicaiton::getInstance();
-    $this->context = Context::getCurrent();
-    $this->config = Config::getInstance();
-    $this->options = Options::getInstance();
-    $this->options = Options::getInstance();
-    $this->security = Security::getInstance();
-  }
+    /**
+     * Компоненты CMS
+     *
+     * @var Reagordi\CMS\CMS
+     */
+    public $cms;
 
-  /**
-   * Возврат экземпляра класса Config
-   *
-   * @return Config
-   */
-  public function getConfig()
-  {
-    return $this->config;
-  }
-
-  /**
-   * Возврат экземпляра класса Options
-   *
-   * @return Options
-   */
-  public function getOptions()
-  {
-    return $this->options;
-  }
-
-  /**
-   * Возврат экземпляра класса Application
-   *
-   * @return Application
-   */
-  public function getApplication()
-  {
-    return $this->applicaiton;
-  }
-
-  /**
-   * Возврат экземпляра класса Context
-   *
-   * @return Context
-   */
-  public function getContext()
-  {
-    return $this->context;
-  }
-
-  /**
-   * Returns current instance of the Reagordi.
-   *
-   * @return Reagordi
-   */
-  public static function getInstance()
-  {
-    if (self::$app === null) {
-      self::$app = new Reagordi();
+    /**
+     * Reagordi constructor.
+     */
+    protected function __construct()
+    {
+        $this->applicaiton = Applicaiton::getInstance();
+        $this->context = Context::getCurrent();
+        $this->options = Options::getInstance();
+        $this->security = Security::getInstance();
+        $this->user = User::getInstance();
+        if ( is_file( VENDOR_DIR . '/reagordi/cms/src/CMS.php' ) ) {
+            require_once VENDOR_DIR . '/reagordi/cms/src/CMS.php';
+            $this->cms = Reagordi\CMS\CMS::getInstance();
+        }
     }
-    return self::$app;
-  }
+
+    /**
+     * Returns current instance of the Reagordi.
+     *
+     * @return Reagordi
+     */
+    public static function getInstance()
+    {
+        if (self::$app === null) {
+            self::$app = new Reagordi();
+        }
+        return self::$app;
+    }
 }

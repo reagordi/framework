@@ -176,9 +176,7 @@ class Languages
             $this->current_lang = Reagordi::$app->context->request->get( 'lang' );
         } elseif ( Reagordi::$app->context->request->getCookie( RG_COOKIE_LANG ) ) {
             $this->current_lang = Reagordi::$app->context->request->getCookie( RG_COOKIE_LANG );
-        } elseif ( Reagordi::$app->config->get( 'default_lang' ) ) {
-            $this->current_lang = Reagordi::$app->config->get( 'default_lang' );
-        } elseif ( Reagordi::$app->options->get( 'default_lang' ) ) {
+        } elseif ( Reagordi::$app->options->get( 'language' ) ) {
             $this->current_lang = Reagordi::$app->options->get( 'default_lang' );
         } else {
             $this->current_lang = 'en';

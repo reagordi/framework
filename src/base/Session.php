@@ -30,14 +30,18 @@ class Session
         if ( $this->is_active === false ) {
             $this->is_active = true;
             $sid = Reagordi::$app->context->request->get( 'sid' );
+            $params = session_get_cookie_params();
+            if ( DOMAIN ) $params['domain'] = DOMAIN;
+            if (Reagordi::$app->options->get('components', 'request', 'onlySSL')) $params['secure'] = true;
+            session_set_cookie_params($params['lifetime'], "/", $params['domain'], $params['secure'], true);
             session_name( RG_COOKIE_SID );
             if ( $sid ) {
                 session_id( $sid );
             }
             $status = session_start();
             $this->sid = session_id();
-            return $status;
         }
+        return $this->sid;
     }
 
     /**

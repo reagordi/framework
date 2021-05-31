@@ -6,7 +6,7 @@
  * @author Sanya Skull
  */
 
-namespace SDesya74\Tools;
+namespace Reagordi\Framework\Tools;
 
 use RedBeanPHP\Adapter;
 use RedBeanPHP\QueryWriter;

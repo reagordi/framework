@@ -9,6 +9,8 @@
 
 namespace Reagordi\Framework\Base;
 
+use Reagordi\Framework\Web\CookieCollection;
+
 class Request
 {
     /**
@@ -49,9 +51,9 @@ class Request
     /**
      * Информацию о Cookie
      *
-     * @var array
+     * @var CookieCollection
      */
-    private $cookie = [];
+    public $cookie;
 
     /**
      * Request constructor.
@@ -60,7 +62,7 @@ class Request
     {
         $this->get = $this->xss( $_GET );
         $this->request = $this->xss( $_REQUEST );
-        $this->cookie = $_COOKIE;
+        $this->cookie = CookieCollection::getInstance();
         $this->file = $_FILES;
         if ( isset( $_SERVER['CONTENT_TYPE'] ) && $_SERVER['CONTENT_TYPE'] == 'application/json' )
             $this->json = $this->xss( json_decode( file_get_contents( 'php://input' ), true ) );
@@ -75,7 +77,7 @@ class Request
      */
     public function getCookieList()
     {
-        return $this->cookie;
+        return $this->cookie->getList();
     }
 
     /**

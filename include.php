@@ -8,18 +8,18 @@
 
 use Phpfastcache\CacheManager;
 
-if ( Reagordi::$app->options->get( 'cache', 'type' ) == 'redis' ) {
+if ( Reagordi::$app->options->get( 'components', 'cache', 'type' ) == 'redis' ) {
     CacheManager::setDefaultConfig(new Phpfastcache\Config\ConfigurationOption([
-        'host' => Reagordi::$app->options->get( 'cache', 'value', 'host' ),
-        'port' => Reagordi::$app->options->get( 'cache', 'value', 'port' )
+        'host' => Reagordi::$app->options->get( 'components', 'cache', 'value', 'host' ),
+        'port' => Reagordi::$app->options->get( 'components', 'cache', 'value', 'port' )
     ]));
-} elseif ( Reagordi::$app->options->get( 'cache', 'type' ) == 'files' ) {
+} elseif ( Reagordi::$app->options->get( 'components', 'cache', 'type' ) == 'files' ) {
     \Reagordi\Framework\IO\Directory::createDirectory( DATA_DIR . '/cache' );
     CacheManager::setDefaultConfig(new Phpfastcache\Config\ConfigurationOption([
         'path' => DATA_DIR . '/cache'
     ]));
 }
-Reagordi::$app->context->cache = CacheManager::getInstance( Reagordi::$app->options->get( 'cache', 'type' ) );
+Reagordi::$app->context->cache = CacheManager::getInstance( Reagordi::$app->options->get( 'components', 'cache', 'type' ) );
 
 $url = '';
 if ( Reagordi::$app->context->request->isHttps() ) $url .= 'https://';
@@ -32,8 +32,6 @@ unset( $url );
 // region Get all routes
 $collector = new \Phroute\Phroute\RouteCollector();
 
-define( 'DB_PREF', DB_GLOBAL_PREF . Reagordi::$app->config->get( 'id' ) );
-
 if ( is_file( VENDOR_DIR . '/reagordi/cms/include.php' ) ) {
     $_pref = str_replace( '\\', '', dirname( Reagordi::$app->context->server->getPhpSelf() ) );
     if ( $_pref ) {
@@ -44,8 +42,10 @@ if ( is_file( VENDOR_DIR . '/reagordi/cms/include.php' ) ) {
         require_once VENDOR_DIR . '/reagordi/cms/include.php';
     }
 } else {
+    define( 'DB_PREF', DB_GLOBAL_PREF );
+
     $path = str_replace( ROOT_DIR . '/', '', APP_DIR );
-    define( 'TEMPLATE_URL', str_replace(ROOT_DIR, '', APP_DIR) . '/templates/' . Reagordi::$app->config->get( 'theme', 'site' ) );
+    define( 'TEMPLATE_URL', str_replace(ROOT_DIR, '', APP_DIR) . '/templates/' );
 
     $it = new RecursiveDirectoryIterator(  APP_DIR . '/pages/' );
 
@@ -97,7 +97,7 @@ try {
     } else {
         $response = str_replace( '<!--[Reagordi Style]-->', \Reagordi\Framework\Web\Asset::getInstance()->getCss(), $response );
         $response = str_replace( '<!--[Reagordi Js]-->', \Reagordi\Framework\Web\Asset::getInstance()->getJs(), $response );
-        if ( Reagordi::getInstance()->getConfig()->get( 'optimize', 'gzip_html' ) ) {
+        if ( Reagordi::$app->options->get( 'components', 'optimize', 'html' ) ) {
             $response = \Reagordi\Framework\Web\Optimize::html( $response );
         }
         echo $response;
@@ -124,7 +124,7 @@ try {
         $response = ob_get_clean();
         $response = str_replace( '<!--[Reagordi Style]-->', \Reagordi\Framework\Web\Asset::getInstance()->getCss(), $response );
         $response = str_replace( '<!--[Reagordi Js]-->', \Reagordi\Framework\Web\Asset::getInstance()->getJs(), $response );
-        if ( Reagordi::getInstance()->getConfig()->get( 'optimize', 'gzip_html' ) ) {
+        if ( Reagordi::$app->options->get( 'components', 'optimize', 'html' ) ) {
             $response = \Reagordi\Framework\Web\Optimize::html( $response );
         }
         echo $response;
@@ -151,7 +151,7 @@ try {
         $response = ob_get_clean();
         $response = str_replace( '<!--[Reagordi Style]-->', \Reagordi\Framework\Web\Asset::getInstance()->getCss(), $response );
         $response = str_replace( '<!--[Reagordi Js]-->', \Reagordi\Framework\Web\Asset::getInstance()->getJs(), $response );
-        if ( Reagordi::getInstance()->getConfig()->get( 'optimize', 'gzip_html' ) ) {
+        if ( Reagordi::$app->options->get( 'components', 'optimize', 'html' ) ) {
             $response = \Reagordi\Framework\Web\Optimize::html( $response );
         }
         echo $response;
@@ -178,7 +178,7 @@ try {
         $response = ob_get_clean();
         $response = str_replace( '<!--[Reagordi Style]-->', \Reagordi\Framework\Web\Asset::getInstance()->getCss(), $response );
         $response = str_replace( '<!--[Reagordi Js]-->', \Reagordi\Framework\Web\Asset::getInstance()->getJs(), $response );
-        if ( Reagordi::getInstance()->getConfig()->get( 'optimize', 'gzip_html' ) ) {
+        if ( Reagordi::$app->options->get( 'components', 'optimize', 'html' ) ) {
             $response = \Reagordi\Framework\Web\Optimize::html( $response );
         }
         echo $response;

@@ -11,7 +11,6 @@ namespace Reagordi\Framework\Base;
 
 use Reagordi\Framework\Tools\ArrayToObject;
 use Reagordi\Framework\Web\Components;
-use Reagordi\Framework\Config\Config;
 use Reagordi\Framework\Web\Languages;
 use Reagordi\Framework\Web\View;
 use Reagordi;
@@ -42,7 +41,7 @@ class Context
     /** @var CacheManager */
     public $cache;
 
-    private $document = [];
+    public $document = [];
 
     /**
      * Context constructor.
@@ -110,9 +109,9 @@ class Context
     {
         $content = '';
         if ( !isset( $this->document['title'] ) )
-            $this->document['title'] = Config::getInstance()->get( 'site_name' );
+            $this->document['title'] = '';
         if ( !isset( $this->document['robots'] ) )
-            $this->document['robots'] = Config::getInstance()->get( 'robots_access' );
+            $this->document['robots'] = 'index,follow';
         $content .= '<meta charset="utf-8" />'."\n";
         $content .= '<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width" />'."\n";
         if ( isset( $this->document['description'] ) )
@@ -126,7 +125,7 @@ class Context
             $content .= '<meta itemprop="image" content="' . $this->document['seo_image'] . '"/>'."\n";
 
         // Twitter meta
-        $content .= '<meta name="twitter:site" content="' . Config::getInstance()->get( 'site_name' ) . '"/>'."\n";
+        //$content .= '<meta name="twitter:site" content="' . Config::getInstance()->get( 'site_name' ) . '"/>'."\n";
         $content .= '<meta name="twitter:title" content="' . $this->document['title'] . '"/>'."\n";
         if ( isset( $this->document['description'] ) )
             $content .= '<meta name="twitter:description" content="' . $this->document['description'] . '"/>'."\n";
@@ -135,7 +134,7 @@ class Context
         $content .= '<meta name="twitter:domain" content="' . $this->getServer()->getHttpHost() . '"/>'."\n";
 
         // Meta Og
-        $content .= '<meta property="og:site_name" content="' . Reagordi::$app->config->get( 'site_name' ) . '"/>'."\n";
+        //$content .= '<meta property="og:site_name" content="' . Reagordi::$app->config->get( 'site_name' ) . '"/>'."\n";
         $content .= '<meta property="og:title" content="' . $this->document['title'] . '" />'."\n";
         if ( isset( $this->document['description'] ) )
             $content .= '<meta property="og:description" content="' . trim( strip_tags( $this->document['description'] ) ) . '" />'."\n";
@@ -147,12 +146,12 @@ class Context
             $content .= '<meta name="robots" content="' . $this->document['robots'] . '" />'."\n";
 
         // Author info
-        if ( Config::getInstance()->get( 'show_author' ) ) {
-            $content .= '<meta name="generator" content="Reagordi Framework" />'."\n";
-            $content .= '<meta name="author" content="Reagordi Framework" />'."\n";
-            $content .= '<meta name="copyright" content="Reagordi Framework (c) '.date('Y').'" />'."\n";
-            $content .= '<meta http-equiv="reply-to" content="support@reagordi.com" />'."\n";
-        }
+        //if ( Config::getInstance()->get( 'show_author' ) ) {
+        //    $content .= '<meta name="generator" content="Reagordi Framework" />'."\n";
+        //    $content .= '<meta name="author" content="Reagordi Framework" />'."\n";
+        //    $content .= '<meta name="copyright" content="Reagordi Framework (c) '.date('Y').'" />'."\n";
+        //    $content .= '<meta http-equiv="reply-to" content="support@reagordi.com" />'."\n";
+        //}
         $content .= '<title>' . $this->document['title'] . '</title>'."\n";
         $content .= '<!--[Reagordi Style]-->';
         $lang = LANGUAGE_ID;
@@ -168,6 +167,10 @@ var reagordi = {
 </script>
 _HTML;
 
+        if ( is_file( VENDOR_DIR . '/reagordi/cms/src/CMS.php' ) ) {
+            echo Reagordi::$app->cms->getHead();
+            return;
+        }
         echo $content;
     }
 

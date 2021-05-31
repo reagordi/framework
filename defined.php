@@ -54,10 +54,3 @@ defined('REAGORDI_DIR_PERMISSIONS') or define('REAGORDI_DIR_PERMISSIONS', 0755);
  * @var string
  */
 defined('REAGORDI_FILE_PERMISSIONS') or define('REAGORDI_FILE_PERMISSIONS', 0644);
-
-/**
- * Разрешает мультисайтовость
- *
- * @var bool
- */
-defined('RG_ALLOW_MULTISITE') or define('RG__ALLOW_MULTISITE', false);

@@ -7,7 +7,7 @@
  * @author Sergej Rufov <support@freeun.ru>
  */
 
-namespace Reagordi\Framework\Config;
+namespace Reagordi\Framework\Base;
 
 class Options
 {
