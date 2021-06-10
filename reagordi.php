@@ -25,7 +25,10 @@ if (REAGORDI_ENV == 'dev' || REAGORDI_ENV == 'test') {
 
 if (REAGORDI_ENV == 'dev') {
     $whoops = new \Whoops\Run();
-    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
+    if (REAGORDI_DEV_VIEW == 'html') $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
+    if (REAGORDI_DEV_VIEW == 'json') $whoops->pushHandler(new \Whoops\Handler\JsonResponseHandler());
+    if (REAGORDI_DEV_VIEW == 'xml') $whoops->pushHandler(new \Whoops\Handler\XmlResponseHandler());
+    if (REAGORDI_DEV_VIEW == 'text') $whoops->pushHandler(new \Whoops\Handler\PlainTextHandler());
     $whoops->register();
     unset($whoops);
 }
@@ -41,6 +44,7 @@ require_once __DIR__ . '/src/loader.php';
         'Reagordi\\Framework\\Base\\Context' => __DIR__ . '/src/base/Context.php',
         'Reagordi\\Framework\\Base\\Server' => __DIR__ . '/src/base/Server.php',
         'Reagordi\\Framework\\Base\\Request' => __DIR__ . '/src/base/Request.php',
+        'Reagordi\\Framework\\Base\\Mailer' => __DIR__ . '/src/base/Mailer.php',
         'Reagordi\\Framework\\Web\\Cache' => __DIR__ . '/src/web/Cache.php',
         'Reagordi\\Framework\\Web\\View' => __DIR__ . '/src/web/View.php',
         'Reagordi\\Framework\\Web\\Asset' => __DIR__ . '/src/web/Asset.php',

@@ -82,12 +82,12 @@ try {
     if ( RESPONSE_API && is_array( $response ) ) {
         ob_end_clean();
         // region CORS
-        header( 'Access-Control-Allow-Methods: POST, GET, DELETE, PUT, PATCH, OPTIONS' );
-        header( 'Access-Control-Allow-Headers: Authorization, Content-Type' );
         header( 'Content-Type: application/json; charset=utf-8' );
-        header( 'Access-Control-Max-Age: 1728000' );
         header( 'Access-Control-Allow-Origin: *' );
         if ( Reagordi::$app->context->server->getRequestMethod() === 'OPTIONS' ) {
+            header( 'Access-Control-Allow-Methods: POST, GET, DELETE, PUT, PATCH, OPTIONS' );
+            header( 'Access-Control-Allow-Headers: Authorization, Content-Type' );
+            header( 'Access-Control-Max-Age: 1728000' );
             header( 'Content-Length: 0' );
             die();
         }
@@ -105,6 +105,17 @@ try {
 } catch (\Phroute\Phroute\Exception\HttpMethodNotAllowedException $exception) {
     if ( RESPONSE_API ) {
         ob_end_clean();
+        // region CORS
+        header( 'Content-Type: application/json; charset=utf-8' );
+        header( 'Access-Control-Allow-Origin: *' );
+        if ( Reagordi::$app->context->server->getRequestMethod() === 'OPTIONS' ) {
+            header( 'Access-Control-Allow-Methods: POST, GET, DELETE, PUT, PATCH, OPTIONS' );
+            header( 'Access-Control-Allow-Headers: Authorization, Content-Type' );
+            header( 'Access-Control-Max-Age: 1728000' );
+            header( 'Content-Length: 0' );
+            die();
+        }
+        // endregion
         api_send_response(api_error(
             array(
                 'code' => 405,
@@ -132,6 +143,17 @@ try {
 } catch (\Phroute\Phroute\Exception\HttpRouteNotFoundException $exception) {
     if ( RESPONSE_API ) {
         ob_end_clean();
+        // region CORS
+        header( 'Content-Type: application/json; charset=utf-8' );
+        header( 'Access-Control-Allow-Origin: *' );
+        if ( Reagordi::$app->context->server->getRequestMethod() === 'OPTIONS' ) {
+            header( 'Access-Control-Allow-Methods: POST, GET, DELETE, PUT, PATCH, OPTIONS' );
+            header( 'Access-Control-Allow-Headers: Authorization, Content-Type' );
+            header( 'Access-Control-Max-Age: 1728000' );
+            header( 'Content-Length: 0' );
+            die();
+        }
+        // endregion
         api_send_response(api_error(
             array(
                 'code' => 404,
@@ -159,6 +181,17 @@ try {
 } catch (Phroute\Exception\BadRouteException $exception) {
     if ( RESPONSE_API ) {
         ob_end_clean();
+        // region CORS
+        header( 'Content-Type: application/json; charset=utf-8' );
+        header( 'Access-Control-Allow-Origin: *' );
+        if ( Reagordi::$app->context->server->getRequestMethod() === 'OPTIONS' ) {
+            header( 'Access-Control-Allow-Methods: POST, GET, DELETE, PUT, PATCH, OPTIONS' );
+            header( 'Access-Control-Allow-Headers: Authorization, Content-Type' );
+            header( 'Access-Control-Max-Age: 1728000' );
+            header( 'Content-Length: 0' );
+            die();
+        }
+        // endregion
         api_send_response(api_error(
             array(
                 'code' => 500,

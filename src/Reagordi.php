@@ -4,7 +4,9 @@ use Reagordi\Framework\Base\Applicaiton;
 use Reagordi\Framework\Base\Security;
 use Reagordi\Framework\Base\Options;
 use Reagordi\Framework\Base\Context;
+use Reagordi\Framework\Base\Mailer;
 use Reagordi\Framework\Web\User;
+use Reagordi\CMS\CMS;
 
 class Reagordi
 {
@@ -53,9 +55,16 @@ class Reagordi
     /**
      * Компоненты CMS
      *
-     * @var Reagordi\CMS\CMS
+     * @var CMS
      */
     public $cms;
+
+    /**
+     * Отправка писем
+     *
+     * @var PHPMailer
+     */
+    public $mailer;
 
     /**
      * Reagordi constructor.
@@ -67,9 +76,10 @@ class Reagordi
         $this->options = Options::getInstance();
         $this->security = Security::getInstance();
         $this->user = User::getInstance();
-        if ( is_file( VENDOR_DIR . '/reagordi/cms/src/CMS.php' ) ) {
+        $this->mailer = Mailer::getInstance();
+        if (is_file(VENDOR_DIR . '/reagordi/cms/src/CMS.php')) {
             require_once VENDOR_DIR . '/reagordi/cms/src/CMS.php';
-            $this->cms = Reagordi\CMS\CMS::getInstance();
+            $this->cms = CMS::getInstance();
         }
     }
 
